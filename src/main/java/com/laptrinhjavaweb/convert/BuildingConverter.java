@@ -19,6 +19,7 @@ public class BuildingConverter {
         BuildingSearchResponse buildingSearchResponse = modelMapper.map(entity, BuildingSearchResponse.class);
 /*        BuildingSearchRequest buildingSearchResponse = new BuildingSearchRequest();
         buildingSearchResponse.setName(entity.getName());*/
+        buildingSearchResponse.setAddress(buildingSearchResponse.getStreet() + ", " + buildingSearchResponse.getWard() + ", " + DistrictsEnum.getValueByName(buildingSearchResponse.getDistrict()));
         return  buildingSearchResponse;
     }
 
