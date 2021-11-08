@@ -274,7 +274,7 @@ CREATE TABLE `renttype` (
 
 LOCK TABLES `renttype` WRITE;
 /*!40000 ALTER TABLE `renttype` DISABLE KEYS */;
-INSERT INTO `renttype` VALUES (1,'tang-tret','Tầng trệt'),(2,'nguyen-can','Nguyên căn'),(3,'noi-that','Nội thất');
+INSERT INTO `renttype` VALUES (1,'TANG_TRET','Tầng trệt'),(2,'NGUYEN_CAN','Nguyên căn'),(3,'NOI_THAT','Nội thất');
 /*!40000 ALTER TABLE `renttype` ENABLE KEYS */;
 UNLOCK TABLES;
 
