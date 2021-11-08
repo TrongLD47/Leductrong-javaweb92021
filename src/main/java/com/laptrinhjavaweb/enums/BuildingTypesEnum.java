@@ -11,8 +11,11 @@ public enum BuildingTypesEnum {
     BuildingTypesEnum(String buildingTypeValue) {
         this.buildingTypeValue = buildingTypeValue;
     }
+    public String getDistrictTypeValue() {
+        return buildingTypeValue;
+    }
 
-	public String getBuildingTypeValue() {
+    public String getBuildingTypeValue() {
 		return buildingTypeValue;
 	}	
 }

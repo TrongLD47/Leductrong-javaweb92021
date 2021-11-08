@@ -4,7 +4,7 @@ public class BuildingEntity {
 
     private String name;
     private String type;
-    private Long districtId;
+    private String districtCode;
     private Integer numberofbasement;
     private String ward;
     private String street;
@@ -29,7 +29,16 @@ public class BuildingEntity {
     private String linkofbuilding;
     private String map;
     private String image;
+    private Integer value;
 
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
 
     public String getType() {
         return type;
@@ -230,12 +239,12 @@ public class BuildingEntity {
         this.image = image;
     }
 
-    public Long getDistrictId() {
-        return districtId;
+    public String getDistrictCode() {
+        return districtCode;
     }
 
-    public void setDistrictId(Long districtId) {
-        this.districtId = districtId;
+    public void setDistrictCode(String districtCode) {
+        this.districtCode = districtCode;
     }
 
     public String getName() {

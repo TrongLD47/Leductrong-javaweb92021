@@ -4,6 +4,7 @@ import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.dto.response.BuildingSearchResponse;
 import com.laptrinhjavaweb.entity.BuildingEntity;
 import com.laptrinhjavaweb.enums.BuildingTypesEnum;
+import com.laptrinhjavaweb.enums.DistrictsEnum;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,23 +17,15 @@ public class BuildingConverter {
 
     public BuildingSearchResponse convertToBuidingSearchResponse(BuildingEntity entity){
         BuildingSearchResponse buildingSearchResponse = modelMapper.map(entity, BuildingSearchResponse.class);
-/*        BuildingSearchResponse buildingSearchResponse = new BuildingSearchResponse();
+/*        BuildingSearchRequest buildingSearchResponse = new BuildingSearchRequest();
         buildingSearchResponse.setName(entity.getName());*/
         return  buildingSearchResponse;
     }
 
     public BuildingDTO convertToDTO(BuildingEntity entity) {
-        ModelMapper modelMapper = new ModelMapper();
         BuildingDTO dto = modelMapper.map(entity, BuildingDTO.class);
-        if (entity.getFloorarea() != null) {
-            dto.setFloorArea(String.valueOf(entity.getFloorarea()));
-        }
-        if (entity.getNumberofbasement() != null) {
-            dto.setNumberOfBasement(String.valueOf(entity.getNumberofbasement()));
-        }
-        if (entity.getType() != null){
-            dto.setType(String.valueOf(convertBuildingType(dto.getType())));
-        }
+        dto.setAddress(dto.getStreet() + ", " + dto.getWard() + ", " + DistrictsEnum.getValueByName(dto.getDistrict()));
+        dto.setType(String.valueOf(convertBuildingType(dto.getType())));
         return dto;
     }
 
