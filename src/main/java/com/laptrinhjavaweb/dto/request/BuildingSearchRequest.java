@@ -1,5 +1,7 @@
 package com.laptrinhjavaweb.dto.request;
 
+import sun.font.StrikeCache;
+
 public class BuildingSearchRequest {
     private String name;
     private String district;

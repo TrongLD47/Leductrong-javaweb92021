@@ -26,6 +26,8 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Autowired
     private BuildingConverter buildingConverter;
+    @Autowired
+    private BuildingService buildingService;
 
 
     @Override
@@ -56,5 +58,26 @@ public class BuildingServiceImpl implements BuildingService {
             buildingTypes.put(item.name(), item.getBuildingTypeValue());
         }
         return buildingTypes;
+    }
+
+    @Override
+    public BuildingSearchRequest initSearchParams(Map<String, String> model, String[] buildingTypes) {
+
+        BuildingSearchRequest buildingSearchRequest = new BuildingSearchRequest();
+
+        buildingSearchRequest.setName(model.get("name"));
+        buildingSearchRequest.setDistrict(model.get("district"));
+        buildingSearchRequest.setBuildingArea(model.get("buildingArea"));
+        buildingSearchRequest.setNumberOfBasement(model.get("numberOfBasement"));
+        buildingSearchRequest.setStreet(model.get("street"));
+        buildingSearchRequest.setWard(model.get("ward"));
+        buildingSearchRequest.setBuildingTypes(buildingTypes);
+        buildingSearchRequest.setAreaRentFrom(model.get("areaRentFrom"));
+        buildingSearchRequest.setAreaRentTo(model.get("areaRentTo"));
+        buildingSearchRequest.setRentPriceFrom(model.get("rentpriceFrom"));
+        buildingSearchRequest.setRentPriceTo(model.get("rentpriceTo"));
+        buildingSearchRequest.setStaffId(model.get("staffId"));;
+
+        return buildingSearchRequest;
     }
 }
