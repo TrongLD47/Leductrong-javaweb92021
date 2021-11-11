@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface BuildingService {
-    List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearch);
+    List<BuildingSearchResponse> findAll(Map<String, Object> model, List<String> buildingTypes);
     Map<String, String> getDistricts();
     Map<String, String> getBuildingTypes();
-    BuildingSearchRequest initSearchParams(Map<String, String> model,  String[] buildingTypes);
+    BuildingSearchRequest initSearchParams(Map<String, Object> model, List<String> buildingTypes);
 }

@@ -17,10 +17,10 @@ import java.util.Map;
 	@Autowired
 	private BuildingService buildingService;
 	@GetMapping
-	public List<BuildingSearchResponse> findAll(@RequestParam Map<String, String> model, @RequestParam String[] buildingTypes){
-		buildingService.initSearchParams(model, buildingTypes);
-		BuildingSearchRequest requests= new BuildingSearchRequest();
-		List<BuildingSearchResponse> buildings = buildingService.findAll(requests);
-		return buildings;
+	public List<BuildingSearchResponse> findAll(@RequestParam Map<String, Object> params,
+                                                @RequestParam List<String> buildingTypes){
+		//buildingService.initSearchParams(params, buildingTypes);
+
+		return  buildingService.findAll(params, buildingTypes);
 }
 }

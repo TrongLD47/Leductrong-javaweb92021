@@ -31,10 +31,10 @@ public class BuildingJdbcImpl implements BuildingJdbc {
             if (conn != null) {
                 StringBuilder sql = new StringBuilder("SELECT A.name, A.street, A.ward, D.code, A.numberofbasement, A.rentprice, A.floorarea, A.servicefee FROM building A");
                 sql.append(" INNER JOIN district D ON A.districtid = D.id ");
-                if (StringUtils.IsNullOrEmpty(buildingSearch.getStaffId())) {
+                if (buildingSearch.getStaffId() != 0) {
                     sql.append(" INNER JOIN assignmentbuilding S ON A.id = S.buildingid ");
                 }
-                if(StringUtils.IsNullOrEmpty(buildingSearch.getBuildingTypes().toString())){
+                if(StringUtils.IsNullOrEmpty(buildingSearch.getBuildingTypes().toString() )){
                     sql.append(" INNER JOIN buildingrenttype B ON A.id = B.buildingid  INNER JOIN renttype C ON B.renttypeid = C.id  ");
                 }
 
@@ -89,13 +89,13 @@ public class BuildingJdbcImpl implements BuildingJdbc {
 
     private String buildingSearchField(BuildingSearchRequest buildingSearch){
         StringBuilder sql = new StringBuilder("");
-        if (StringUtils.IsNullOrEmpty(buildingSearch.getRentPriceFrom())) {
+        if (StringUtils.IsNullOrEmpty(buildingSearch.getRentPriceFrom().toString())) {
             sql.append(" AND A.rentprice >= " + buildingSearch.getRentPriceFrom() + "");
         }
-        if (StringUtils.IsNullOrEmpty(buildingSearch.getRentPriceTo())) {
+        if (StringUtils.IsNullOrEmpty(buildingSearch.getRentPriceTo().toString())) {
             sql.append(" AND A.rentprice <= " + buildingSearch.getRentPriceTo() + "");
         }
-        if (StringUtils.IsNullOrEmpty(buildingSearch.getAreaRentFrom()) || StringUtils.IsNullOrEmpty(buildingSearch.getAreaRentTo())) {
+        if (buildingSearch.getAreaRentFrom() != 0 || (buildingSearch.getAreaRentTo() != 0 )) {
             sql.append(" AND EXISTS (SELECT * From rentarea R WHERE (R.buildingid = A.id");
             if (buildingSearch.getAreaRentFrom() != null) {
                 sql.append(" AND R.value >= " + buildingSearch.getAreaRentFrom() + "");
@@ -112,19 +112,20 @@ public class BuildingJdbcImpl implements BuildingJdbc {
 
             sql.append(buildingTypeSql + ")");
         }
-        if(StringUtils.IsNullOrEmpty(buildingSearch.getNumberOfBasement())){
-            sql.append(" AND A.numberofbasement =  " + buildingSearch.getNumberOfBasement());
-        }
+
         if(StringUtils.IsNullOrEmpty(buildingSearch.getStreet())){
             sql.append(" AND A.street like'%" + buildingSearch.getStreet() + "%' ");
-        }
-        if(StringUtils.IsNullOrEmpty(buildingSearch.getBuildingArea())){
-            sql.append(" AND A.floorarea like'%" + buildingSearch.getBuildingArea() + "%' ");
         }
         if(StringUtils.IsNullOrEmpty(buildingSearch.getWard())){
             sql.append(" AND A.ward like'%" + buildingSearch.getWard() + "%' ");
         }
-        if(StringUtils.IsNullOrEmpty(buildingSearch.getStaffId())){
+        if(buildingSearch.getNumberOfBasement() != 0){
+            sql.append(" AND A.numberofbasement =  " + buildingSearch.getNumberOfBasement());
+        }
+        if(buildingSearch.getBuildingArea() != 0){
+            sql.append(" AND A.floorarea like'%" + buildingSearch.getBuildingArea() + "%' ");
+        }
+        if(buildingSearch.getStaffId() != 0){
             sql.append(" AND S.staffid = " + buildingSearch.getStaffId() + " ");
         }
         if(StringUtils.IsNullOrEmpty(buildingSearch.getDistrict())){

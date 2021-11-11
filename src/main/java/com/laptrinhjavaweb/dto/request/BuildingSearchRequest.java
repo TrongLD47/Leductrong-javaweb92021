@@ -5,16 +5,16 @@ import sun.font.StrikeCache;
 public class BuildingSearchRequest {
     private String name;
     private String district;
-    private String buildingArea;
+    private Integer floorArea;
     private String street;
     private String ward;
-    private String numberOfBasement;
+    private Integer numberOfBasement;
     private String[] buildingTypes = new String[] {};
-    private String rentPriceFrom;
-    private String rentPriceTo;
-    private String areaRentFrom;
-    private String areaRentTo;
-    private String staffId;
+    private Integer rentPriceFrom;
+    private Integer rentPriceTo;
+    private Integer areaRentFrom;
+    private Integer areaRentTo;
+    private Integer staffId;
 
     public String getName() {
         return name;
@@ -32,44 +32,76 @@ public class BuildingSearchRequest {
         this.district = district;
     }
 
-    public String getBuildingArea() {
-        return buildingArea;
-    }
-
-    public String getStaffId() {
+    public Integer getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(String staffId) {
+    public void setStaffId(Integer staffId) {
         this.staffId = staffId;
-    }
-
-    public void setBuildingArea(String buildingArea) {
-        this.buildingArea = buildingArea;
     }
 
     public String getStreet() {
         return street;
     }
 
+    public Integer getBuildingArea() {
+        return floorArea;
+    }
+
+    public void setBuildingArea(Integer buildingArea) {
+        this.floorArea = buildingArea;
+    }
+
+    public Integer getNumberOfBasement() {
+        return numberOfBasement;
+    }
+
+    public void setNumberOfBasement(Integer numberOfBasement) {
+        this.numberOfBasement = numberOfBasement;
+    }
+
+    public Integer getRentPriceFrom() {
+        return rentPriceFrom;
+    }
+
+    public void setRentPriceFrom(Integer rentPriceFrom) {
+        this.rentPriceFrom = rentPriceFrom;
+    }
+
+    public Integer getRentPriceTo() {
+        return rentPriceTo;
+    }
+
+    public void setRentPriceTo(Integer rentPriceTo) {
+        this.rentPriceTo = rentPriceTo;
+    }
+
+    public Integer getAreaRentFrom() {
+        return areaRentFrom;
+    }
+
+    public void setAreaRentFrom(Integer areaRentFrom) {
+        this.areaRentFrom = areaRentFrom;
+    }
+
+    public Integer getAreaRentTo() {
+        return areaRentTo;
+    }
+
+    public void setAreaRentTo(Integer areaRentTo) {
+        this.areaRentTo = areaRentTo;
+    }
+
     public void setStreet(String street) {
         this.street = street;
     }
 
-    public String getWard() {
-        return ward;
+    public Integer getFloorArea() {
+        return floorArea;
     }
 
-    public void setWard(String ward) {
-        this.ward = ward;
-    }
-
-    public String getNumberOfBasement() {
-        return numberOfBasement;
-    }
-
-    public void setNumberOfBasement(String numberOfBasement) {
-        this.numberOfBasement = numberOfBasement;
+    public void setFloorArea(Integer floorArea) {
+        this.floorArea = floorArea;
     }
 
     public String[] getBuildingTypes() {
@@ -80,37 +112,12 @@ public class BuildingSearchRequest {
         this.buildingTypes = buildingTypes;
     }
 
-    public String getRentPriceFrom() {
-        return rentPriceFrom;
+    public String getWard() {
+        return ward;
     }
 
-    public void setRentPriceFrom(String rentPriceFrom) {
-        this.rentPriceFrom = rentPriceFrom;
+    public void setWard(String ward) {
+        this.ward = ward;
     }
-
-    public String getRentPriceTo() {
-        return rentPriceTo;
-    }
-
-    public void setRentPriceTo(String rentPriceTo) {
-        this.rentPriceTo = rentPriceTo;
-    }
-
-    public String getAreaRentFrom() {
-        return areaRentFrom;
-    }
-
-    public void setAreaRentFrom(String areaRentFrom) {
-        this.areaRentFrom = areaRentFrom;
-    }
-
-    public String getAreaRentTo() {
-        return areaRentTo;
-    }
-
-    public void setAreaRentTo(String areaRentTo) {
-        this.areaRentTo = areaRentTo;
-    }
-
 
 }

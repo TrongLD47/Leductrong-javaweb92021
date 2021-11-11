@@ -4,7 +4,7 @@ public class BuildingDTO  extends AbstractDTO{
 
         private String name;
         private String numberOfBasement;
-        private String buildingArea;
+        private String floorArea;
         private String district;
         private String ward;
         private String street;
@@ -42,10 +42,10 @@ public class BuildingDTO  extends AbstractDTO{
             return areaRent;
         }
         public String getBuildingArea() {
-        return buildingArea;
+        return floorArea;
     }
         public void setBuildingArea(String buildingArea) {
-        this.buildingArea = buildingArea;
+        this.floorArea = buildingArea;
     }
         public String getRentpriceFrom() {
         return rentpriceFrom;

@@ -31,7 +31,7 @@ public class BuildingConverter {
     }
 
     private String convertBuildingType(String type) {
-        String value = "";
+        /*String value = "";
         if(type != null && type != "") {
             String[] array = type.split("\\,", -1);
             for (int i = 0; i < array.length; i++) {
@@ -46,7 +46,17 @@ public class BuildingConverter {
                     }
                 }
             }
+        }*/
+
+        String[] array = type.split(",");
+        StringBuilder value = new StringBuilder();
+        if(0 < array.length) {
+            for(String code : array) {
+                value.append("\n -").append(BuildingTypesEnum.valueOf(code).getBuildingTypeValue());
+            }
+        }else {
+            return "BuildingType not found!";
         }
-        return value;
+        return value.toString();
     }
 }

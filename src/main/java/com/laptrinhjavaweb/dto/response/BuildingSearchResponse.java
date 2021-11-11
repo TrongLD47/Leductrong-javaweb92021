@@ -3,11 +3,11 @@ package com.laptrinhjavaweb.dto.response;
 public class BuildingSearchResponse {
     private String name;
     private String district;
-    private String buildingArea;
+    private String floorArea;
     private String street;
     private String ward;
     private String numberOfBasement;
-    private String[] buildingTypes = new String[] {};
+    private String buildingTypes;
     private String rentPriceFrom;
     private String rentPriceTo;
     private String areaRentFrom;
@@ -30,10 +30,10 @@ public class BuildingSearchResponse {
         this.district = district;
     }
     public String getBuildingArea() {
-        return buildingArea;
+        return floorArea;
     }
     public void setBuildingArea(String buildingArea) {
-        this.buildingArea = buildingArea;
+        this.floorArea = buildingArea;
     }
     public String getStreet() {
         return street;
@@ -59,17 +59,17 @@ public class BuildingSearchResponse {
     public void setNumberOfBasement(String numberOfBasement) {
         this.numberOfBasement = numberOfBasement;
     }
-    public String[] getBuildingTypes() {
-        return buildingTypes;
-    }
-    public void setBuildingTypes(String[] buildingTypes) {
-        this.buildingTypes = buildingTypes;
-    }
     public String getRentPriceFrom() {
         return rentPriceFrom;
     }
     public void setRentPriceFrom(String rentPriceFrom) {
         this.rentPriceFrom = rentPriceFrom;
+    }
+    public String getBuildingTypes() {
+        return buildingTypes;
+    }
+    public void setBuildingTypes(String buildingTypes) {
+        this.buildingTypes = buildingTypes;
     }
     public String getRentPriceTo() {
         return rentPriceTo;

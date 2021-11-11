@@ -31,9 +31,15 @@ public class BuildingServiceImpl implements BuildingService {
 
 
     @Override
-    public List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearch) {
+    public List<BuildingSearchResponse> findAll(Map<String, Object> params,
+                                                List<String> buildingTypes) {
+
+        BuildingSearchRequest request = initSearchParams(params, buildingTypes);
+
         List<BuildingSearchResponse> results = new ArrayList<>();
-        List<BuildingEntity> buildingEntities = buildingJdbc.findAll(buildingSearch);
+
+        List<BuildingEntity> buildingEntities = buildingJdbc.findAll(request);
+
         //convert entity -> BuildingSearchResponse
         for(BuildingEntity item: buildingEntities){
             BuildingSearchResponse buildingSearchResponse = buildingConverter.convertToBuidingSearchResponse(item);
@@ -61,23 +67,57 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public BuildingSearchRequest initSearchParams(Map<String, String> model, String[] buildingTypes) {
+    public BuildingSearchRequest initSearchParams(Map<String, Object> model,
+                                                  List<String> buildingTypes) {
 
-        BuildingSearchRequest buildingSearchRequest = new BuildingSearchRequest();
+        BuildingSearchRequest request = new BuildingSearchRequest();
+        if(null != model.get("name") && !"".equals(model.get("name").toString())){
+            //request.setName((String)model.get("name")) ;
+            request.setName((model.get("name").toString()));
+        }
+        if(null != model.get("district") && !"".equals(model.get("district").toString())){
+            request.setDistrict(model.get("district").toString());
+        }
 
-        buildingSearchRequest.setName(model.get("name"));
-        buildingSearchRequest.setDistrict(model.get("district"));
-        buildingSearchRequest.setBuildingArea(model.get("buildingArea"));
-        buildingSearchRequest.setNumberOfBasement(model.get("numberOfBasement"));
-        buildingSearchRequest.setStreet(model.get("street"));
-        buildingSearchRequest.setWard(model.get("ward"));
-        buildingSearchRequest.setBuildingTypes(buildingTypes);
-        buildingSearchRequest.setAreaRentFrom(model.get("areaRentFrom"));
-        buildingSearchRequest.setAreaRentTo(model.get("areaRentTo"));
-        buildingSearchRequest.setRentPriceFrom(model.get("rentpriceFrom"));
-        buildingSearchRequest.setRentPriceTo(model.get("rentpriceTo"));
-        buildingSearchRequest.setStaffId(model.get("staffId"));;
-
-        return buildingSearchRequest;
+        if(null != model.get("street") && !"".equals(model.get("street").toString())){
+            //request.setStreet((String)model.get("street"));
+            request.setStreet(model.get("street").toString());
+        }
+        if(null != model.get("ward") && !"".equals(model.get("ward").toString())){
+            //request.setWard((String)model.get("ward"));
+            request.setWard(model.get("ward").toString());
+        }
+        if(null != model.get("floorArea") && !"".equals(model.get("floorArea"))){
+           // request.setBuildingArea(Integer.valueOf((String )model.get("buildingArea")));
+            request.setBuildingArea(Integer.parseInt(model.get("buildingArea").toString() ));
+        }
+        if(null != model.get("numberOfBasement") && !"".equals(model.get("numberOfBasement"))){
+            request.setNumberOfBasement(Integer.parseInt(model.get("numberOfBasement").toString() ));
+           // request.setNumberOfBasement(Integer.valueOf((String )model.get("numberOfBasement")));
+        }
+        if(null != model.get("areaRentFrom") && !"".equals(model.get("areaRentFrom"))){
+           // request.setAreaRentFrom(Integer.valueOf((String )model.get("areaRentFrom")));
+            request.setAreaRentFrom(Integer.parseInt(model.get("areaRentFrom").toString() ));
+        }
+        if(null != model.get("areaRentTo") && !"".equals(model.get("areaRentTo"))){
+            //request.setAreaRentTo(Integer.valueOf((String )model.get("areaRentTo")));
+            request.setAreaRentTo(Integer.parseInt(model.get("areaRentTo").toString() ));
+        }
+        if(null != model.get("rentpriceFrom") && !"".equals(model.get("rentpriceFrom"))){
+           // request.setRentPriceFrom(Integer.valueOf((String )model.get("rentpriceFrom")));
+            request.setRentPriceFrom(Integer.parseInt(model.get("rentpriceFrom").toString() ));
+        }
+        if(null != model.get("rentpriceTo") && !"".equals(model.get("rentpriceTo"))){
+            //request.setRentPriceTo(Integer.valueOf((String )model.get("rentpriceTo")));
+            request.setRentPriceTo(Integer.parseInt(model.get("rentpriceTo").toString() ));
+        }
+        if(null != model.get("staffId") && !"".equals(model.get("staffId"))){
+           // request.setStaffId(Integer.valueOf((String )model.get("staffId")));
+            request.setStaffId(Integer.parseInt(model.get("staffId").toString() ));
+        }
+        if(null != buildingTypes && !"".equals(buildingTypes)){
+            request.setBuildingTypes(buildingTypes.toString());
+        }
+        return request;
     }
 }
