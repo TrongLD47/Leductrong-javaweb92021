@@ -2,6 +2,7 @@ package com.laptrinhjavaweb.entity;
 
 public class BuildingEntity {
 
+    private String id;
     private String name;
     private String type;
     private String districtCode;
@@ -24,7 +25,7 @@ public class BuildingEntity {
     private String payment;
     private String renttime;
     private String decorationtime;
-    private Double brokeragefee;
+    private Integer brokeragefee;
     private String note;
     private String linkofbuilding;
     private String map;
@@ -199,11 +200,11 @@ public class BuildingEntity {
         this.decorationtime = decorationtime;
     }
 
-    public Double getBrokeragefee() {
+    public Integer getBrokeragefee() {
         return brokeragefee;
     }
 
-    public void setBrokeragefee(Double brokeragefee) {
+    public void setBrokeragefee(Integer brokeragefee) {
         this.brokeragefee = brokeragefee;
     }
 

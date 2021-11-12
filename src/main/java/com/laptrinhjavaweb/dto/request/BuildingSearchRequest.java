@@ -1,8 +1,11 @@
 package com.laptrinhjavaweb.dto.request;
 
-import sun.font.StrikeCache;
-
 public class BuildingSearchRequest {
+    private Integer id;
+    private String managerName;
+    private String managerPhone;
+    private Integer serviceFee;
+    private Integer brokerAgeFee;
     private String name;
     private String district;
     private Integer floorArea;
@@ -46,6 +49,46 @@ public class BuildingSearchRequest {
 
     public Integer getBuildingArea() {
         return floorArea;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
+    }
+
+    public String getManagerPhone() {
+        return managerPhone;
+    }
+
+    public void setManagerPhone(String managerPhone) {
+        this.managerPhone = managerPhone;
+    }
+
+    public Integer getServiceFee() {
+        return serviceFee;
+    }
+
+    public void setServiceFee(Integer serviceFee) {
+        this.serviceFee = serviceFee;
+    }
+
+    public Integer getBrokerAgeFee() {
+        return brokerAgeFee;
+    }
+
+    public void setBrokerAgeFee(Integer brokerAgeFee) {
+        this.brokerAgeFee = brokerAgeFee;
     }
 
     public void setBuildingArea(Integer buildingArea) {

@@ -4,6 +4,7 @@ import com.laptrinhjavaweb.dto.request.BuildingSearchRequest;
 import com.laptrinhjavaweb.entity.BuildingEntity;
 import com.laptrinhjavaweb.jdbc.BuildingJdbc;
 import com.laptrinhjavaweb.utils.StringUtils;
+import com.laptrinhjavaweb.utils.ValidateUtils;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -20,7 +21,7 @@ public class BuildingJdbcImpl implements BuildingJdbc {
     private final String PASS = "mysql123";
 
     @Override
-    public List<BuildingEntity> findAll(BuildingSearchRequest buildingSearch){
+    public List<BuildingEntity> findAll(BuildingSearchRequest request){
 
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -29,18 +30,17 @@ public class BuildingJdbcImpl implements BuildingJdbc {
 		try {
             conn.setAutoCommit(false);
             if (conn != null) {
-                StringBuilder sql = new StringBuilder("SELECT A.name, A.street, A.ward, D.code, A.numberofbasement, A.rentprice, A.floorarea, A.servicefee FROM building A");
-                sql.append(" INNER JOIN district D ON A.districtid = D.id ");
-                if (buildingSearch.getStaffId() != 0) {
-                    sql.append(" INNER JOIN assignmentbuilding S ON A.id = S.buildingid ");
-                }
-                if(StringUtils.IsNullOrEmpty(buildingSearch.getBuildingTypes().toString() )){
-                    sql.append(" INNER JOIN buildingrenttype B ON A.id = B.buildingid  INNER JOIN renttype C ON B.renttypeid = C.id  ");
-                }
+                StringBuilder sql = new StringBuilder("SELECT b.id, b.name, b.street, b.ward, b.districtid, b.managername, " +
+                        " b.managerphone, b.createddate, b.floorarea,  b.rentprice, b.servicefee, b.brokeragefee" +
+                        " \nFROM building b" +
+                        " \nJOIN district d ON d.id = b.districtid");
+                StringBuilder joinQuery = new StringBuilder();
+                StringBuilder whereQuery = new StringBuilder();
 
-                sql.append(" WHERE 1 = 1 ");
-                String sqlSeacrhField = buildingSearchField(buildingSearch);
-                sql.append(sqlSeacrhField);
+                buildQueryWithJoin(joinQuery, whereQuery, request);
+                buildQueryWithoutJoin(whereQuery, request);
+
+                sql.append(joinQuery).append("\nWHERE 1=1 ").append(whereQuery).append("\nGROUP BY b.id");
 
                 conn = DriverManager.getConnection(DB_URL,USER,PASS);
                 stmt = conn.prepareStatement(sql.toString(), stmt.RETURN_GENERATED_KEYS);
@@ -51,11 +51,12 @@ public class BuildingJdbcImpl implements BuildingJdbc {
                     buildingModel.setName(rs.getString("name"));
                     buildingModel.setStreet(rs.getString("street"));
                     buildingModel.setWard(rs.getString("ward"));
-                   /* buildingModel.setType(rs.getString("type"));*/
+                    buildingModel.setType(rs.getString("type"));
                     buildingModel.setNumberofbasement(rs.getInt("numberofbasement"));
                     buildingModel.setRentprice(rs.getInt("rentprice"));
                     buildingModel.setFloorarea(rs.getInt("floorarea"));
                     buildingModel.setDistrictCode(rs.getString("code"));
+                    buildingModel.setServicefee(rs.getString("servicefee"));
                     buildings.add(buildingModel);
                 }
                 return buildings;
@@ -87,54 +88,65 @@ public class BuildingJdbcImpl implements BuildingJdbc {
 		return new  ArrayList<>();
     }
 
-    private String buildingSearchField(BuildingSearchRequest buildingSearch){
-        StringBuilder sql = new StringBuilder("");
-        if (StringUtils.IsNullOrEmpty(buildingSearch.getRentPriceFrom().toString())) {
-            sql.append(" AND A.rentprice >= " + buildingSearch.getRentPriceFrom() + "");
+    private StringBuilder buildQueryWithJoin(StringBuilder joinQuery, StringBuilder whereQuery, BuildingSearchRequest request) {
+
+        if (ValidateUtils.isValid(request.getStaffId())) {
+
+            joinQuery.append(" INNER JOIN assignmentbuilding a ON A.id = a.buildingid ");
+            whereQuery.append(" AND b.staffid =  " + request.getStaffId());
         }
-        if (StringUtils.IsNullOrEmpty(buildingSearch.getRentPriceTo().toString())) {
-            sql.append(" AND A.rentprice <= " + buildingSearch.getRentPriceTo() + "");
+        if(request.getBuildingTypes().length > 0){
+
+            joinQuery.append(" INNER JOIN buildingrenttype t ON b.id = t.buildingid  INNER JOIN renttype r ON t.renttypeid = r.id  ");
+            whereQuery.append(" AND ( ");
+
+            String buildingTypeSql = Arrays.stream(request.getBuildingTypes()).map(item -> " A.type like '%"+item+"%' ").collect(Collectors.joining(" OR "));
+
+            whereQuery.append(buildingTypeSql + ")");
         }
-        if (buildingSearch.getAreaRentFrom() != 0 || (buildingSearch.getAreaRentTo() != 0 )) {
-            sql.append(" AND EXISTS (SELECT * From rentarea R WHERE (R.buildingid = A.id");
-            if (buildingSearch.getAreaRentFrom() != null) {
-                sql.append(" AND R.value >= " + buildingSearch.getAreaRentFrom() + "");
+        return  joinQuery ;
+    }
+
+    private StringBuilder buildQueryWithoutJoin(StringBuilder whereQuery, BuildingSearchRequest request) {
+
+        if(!StringUtils.IsNullOrEmpty(request.getStreet())){
+            whereQuery.append(" AND b.street like'%" + request.getStreet() + "%' ");
+        }
+        if(!StringUtils.IsNullOrEmpty(request.getWard())){
+            whereQuery.append(" AND b.ward like'%" + request.getWard() + "%' ");
+        }
+        if(!StringUtils.IsNullOrEmpty(request.getDistrict())){
+            whereQuery.append(" AND d.code =  " + request.getDistrict());
+        }
+        if(request.getNumberOfBasement() != 0){
+            whereQuery.append(" AND b.numberofbasement =  " + request.getNumberOfBasement());
+        }
+        if(request.getBuildingArea() != 0){
+            whereQuery.append(" AND b.floorarea like'%" + request.getBuildingArea() + "%' ");
+        }
+        if (!StringUtils.IsNullOrEmpty(request.getRentPriceFrom().toString())) {
+            whereQuery.append(" AND A.rentprice >= " + request.getRentPriceFrom() + "");
+        }
+        if (!StringUtils.IsNullOrEmpty(request.getRentPriceTo().toString())) {
+            whereQuery.append(" AND A.rentprice <= " + request.getRentPriceTo() + "");
+        }
+//        if(request.getNumberOfBasement() != 0){
+//            whereQuery.append(" AND b.servicefee =  " + request.getServiceFee());
+//        }
+//        if(request.getBrokerAgeFee() != 0){
+//            whereQuery.append(" AND b.brokeragefee =  " + request.getBrokerAgeFee());
+//        }
+        if (request.getAreaRentFrom() != 0 || (request.getAreaRentTo() != 0 )) {
+            whereQuery.append(" AND EXISTS (SELECT * From rentarea R WHERE (R.buildingid = A.id");
+            if (request.getAreaRentFrom() != null) {
+                whereQuery.append(" AND R.value >= " + request.getAreaRentFrom() + "");
             }
-            if (buildingSearch.getAreaRentTo() != null) {
-                sql.append(" AND R.value >= " + buildingSearch.getAreaRentTo() + "");
+            if (request.getAreaRentTo() != null) {
+                whereQuery.append(" AND R.value >= " + request.getAreaRentTo() + "");
             }
-            sql.append("))");
+            whereQuery.append("))");
         }
-        if(buildingSearch.getBuildingTypes().length > 0){
-            sql.append(" AND ( ");
-
-            String buildingTypeSql = Arrays.stream(buildingSearch.getBuildingTypes()).map(item -> " A.type like '%"+item+"%' ").collect(Collectors.joining(" OR "));
-
-            sql.append(buildingTypeSql + ")");
-        }
-
-        if(StringUtils.IsNullOrEmpty(buildingSearch.getStreet())){
-            sql.append(" AND A.street like'%" + buildingSearch.getStreet() + "%' ");
-        }
-        if(StringUtils.IsNullOrEmpty(buildingSearch.getWard())){
-            sql.append(" AND A.ward like'%" + buildingSearch.getWard() + "%' ");
-        }
-        if(buildingSearch.getNumberOfBasement() != 0){
-            sql.append(" AND A.numberofbasement =  " + buildingSearch.getNumberOfBasement());
-        }
-        if(buildingSearch.getBuildingArea() != 0){
-            sql.append(" AND A.floorarea like'%" + buildingSearch.getBuildingArea() + "%' ");
-        }
-        if(buildingSearch.getStaffId() != 0){
-            sql.append(" AND S.staffid = " + buildingSearch.getStaffId() + " ");
-        }
-        if(StringUtils.IsNullOrEmpty(buildingSearch.getDistrict())){
-            sql.append(" AND D.code  = "+ buildingSearch.getDistrict() + " ");
-        }
-
-        sql.append(" GROUP BY A.id ");
-
-        return sql.toString();
+        return whereQuery;
     }
 
 }

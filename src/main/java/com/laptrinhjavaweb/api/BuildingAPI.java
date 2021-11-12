@@ -18,7 +18,7 @@ import java.util.Map;
 	private BuildingService buildingService;
 	@GetMapping
 	public List<BuildingSearchResponse> findAll(@RequestParam Map<String, Object> params,
-                                                @RequestParam List<String> buildingTypes){
+                                                @RequestParam String[] buildingTypes){
 		//buildingService.initSearchParams(params, buildingTypes);
 
 		return  buildingService.findAll(params, buildingTypes);
