@@ -116,7 +116,7 @@ public class BuildingServiceImpl implements BuildingService {
             request.setStaffId(Integer.parseInt(model.get("staffId").toString() ));
         }
         if(null != buildingTypes && !"".equals(buildingTypes)){
-            request.setBuildingTypes(buildingTypes.toString());
+            request.setBuildingTypes(buildingTypes.toArray(new String[buildingTypes.size()]));
         }
         return request;
     }
