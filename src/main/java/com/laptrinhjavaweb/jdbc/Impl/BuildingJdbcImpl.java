@@ -30,8 +30,8 @@ public class BuildingJdbcImpl implements BuildingJdbc {
 		try {
             conn.setAutoCommit(false);
             if (conn != null) {
-                StringBuilder sql = new StringBuilder("SELECT b.id, b.name, b.street, b.ward, b.districtid, b.managername, " +
-                        " b.managerphone, b.createddate, b.floorarea,  b.rentprice, b.servicefee, b.brokeragefee" +
+                StringBuilder sql = new StringBuilder("SELECT b.id, b.name, b.street, b.ward, b.districtid, " +
+                        "  b.createddate, b.floorarea,  b.rentprice, b.servicefee, b.brokeragefee" +
                         " \nFROM building b" +
                         " \nJOIN district d ON d.id = b.districtid");
                 StringBuilder joinQuery = new StringBuilder();
@@ -88,7 +88,7 @@ public class BuildingJdbcImpl implements BuildingJdbc {
 		return new  ArrayList<>();
     }
 
-    private StringBuilder buildQueryWithJoin(StringBuilder joinQuery, StringBuilder whereQuery, BuildingSearchRequest request) {
+    private void buildQueryWithJoin(StringBuilder joinQuery, StringBuilder whereQuery, BuildingSearchRequest request) {
 
         if (ValidateUtils.isValid(request.getStaffId())) {
 
@@ -104,10 +104,9 @@ public class BuildingJdbcImpl implements BuildingJdbc {
 
             whereQuery.append(buildingTypeSql + ")");
         }
-        return  joinQuery ;
     }
 
-    private StringBuilder buildQueryWithoutJoin(StringBuilder whereQuery, BuildingSearchRequest request) {
+    private void buildQueryWithoutJoin(StringBuilder whereQuery, BuildingSearchRequest request) {
 
         if(!StringUtils.IsNullOrEmpty(request.getStreet())){
             whereQuery.append(" AND b.street like'%" + request.getStreet() + "%' ");
@@ -146,7 +145,6 @@ public class BuildingJdbcImpl implements BuildingJdbc {
             }
             whereQuery.append("))");
         }
-        return whereQuery;
     }
 
 }
