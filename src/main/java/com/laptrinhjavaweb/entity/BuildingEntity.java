@@ -2,10 +2,10 @@ package com.laptrinhjavaweb.entity;
 
 public class BuildingEntity {
 
-    private String id;
+    private Integer id;
     private String name;
     private String type;
-    private String districtCode;
+    private Integer districtId;
     private Integer numberofbasement;
     private String ward;
     private String street;
@@ -240,14 +240,6 @@ public class BuildingEntity {
         this.image = image;
     }
 
-    public String getDistrictCode() {
-        return districtCode;
-    }
-
-    public void setDistrictCode(String districtCode) {
-        this.districtCode = districtCode;
-    }
-
     public String getName() {
         return name;
     }
@@ -255,6 +247,22 @@ public class BuildingEntity {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(Integer districtId) {
+        this.districtId = districtId;
+    }
 }
 
-// DistrictJdbc -> findById
+// DistrictJdbcImpl -> findById

@@ -16,6 +16,7 @@ import java.util.Map;
 
 	@Autowired
 	private BuildingService buildingService;
+
 	@GetMapping
 	public List<BuildingSearchResponse> findAll(@RequestParam Map<String, Object> params,
                                                 @RequestParam String[] buildingTypes){

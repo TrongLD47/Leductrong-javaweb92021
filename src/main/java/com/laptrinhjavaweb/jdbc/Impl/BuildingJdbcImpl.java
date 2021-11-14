@@ -55,7 +55,7 @@ public class BuildingJdbcImpl implements BuildingJdbc {
                     buildingModel.setNumberofbasement(rs.getInt("numberofbasement"));
                     buildingModel.setRentprice(rs.getInt("rentprice"));
                     buildingModel.setFloorarea(rs.getInt("floorarea"));
-                    buildingModel.setDistrictCode(rs.getString("code"));
+                    buildingModel.setDistrictId(rs.getInt("districtid"));
                     buildingModel.setServicefee(rs.getString("servicefee"));
                     buildings.add(buildingModel);
                 }

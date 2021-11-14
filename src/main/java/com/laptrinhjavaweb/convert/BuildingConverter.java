@@ -3,11 +3,16 @@ package com.laptrinhjavaweb.convert;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.dto.response.BuildingSearchResponse;
 import com.laptrinhjavaweb.entity.BuildingEntity;
+import com.laptrinhjavaweb.entity.DistrictEntity;
 import com.laptrinhjavaweb.enums.BuildingTypesEnum;
 import com.laptrinhjavaweb.enums.DistrictsEnum;
+import com.laptrinhjavaweb.jdbc.DistrictJdbc;
+import com.laptrinhjavaweb.jdbc.Impl.DistrictJdbcImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class BuildingConverter {
@@ -16,11 +21,22 @@ public class BuildingConverter {
     private ModelMapper modelMapper;
 
     public BuildingSearchResponse convertToBuidingSearchResponse(BuildingEntity entity){
+
+        DistrictJdbcImpl district = new DistrictJdbcImpl();
+
+        DistrictEntity districtEntity = district.findById(entity.getDistrictId());
+
         BuildingSearchResponse buildingSearchResponse = modelMapper.map(entity, BuildingSearchResponse.class);
-/*        BuildingSearchRequest buildingSearchResponse = new BuildingSearchRequest();
-        buildingSearchResponse.setName(entity.getName());*/
-        buildingSearchResponse.setAddress(buildingSearchResponse.getStreet() + ", " + buildingSearchResponse.getWard() + ", " + DistrictsEnum.getValueByName(buildingSearchResponse.getDistrict()));
+
+        buildingSearchResponse.setAddress(buildingSearchResponse.getStreet() + ", "
+                + buildingSearchResponse.getWard() + ", " + districtEntity.getName() );
+
         return  buildingSearchResponse;
+
+        /*        BuildingSearchRequest buildingSearchResponse = new BuildingSearchRequest();
+        buildingSearchResponse.setName(entity.getName());*/
+
+//buildingSearchResponse.setAddress(buildingSearchResponse.getStreet() + ", " + buildingSearchResponse.getWard() + ", " + DistrictsEnum.getValueByName(buildingSearchResponse.getDistrict()));
     }
 
     public BuildingDTO convertToDTO(BuildingEntity entity) {

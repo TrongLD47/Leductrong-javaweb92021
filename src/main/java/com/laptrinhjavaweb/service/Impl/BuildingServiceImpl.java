@@ -111,7 +111,7 @@ public class BuildingServiceImpl implements  BuildingService {
            // request.setStaffId(Integer.valueOf((String )model.get("staffId")));
             request.setStaffId(Integer.parseInt(model.get("staffId").toString() ));
         }
-        if(ValidateUtils.isValid(model.get(buildingTypes))){
+        if(null != buildingTypes && 0 < buildingTypes.length){
             request.setBuildingTypes(buildingTypes);
         }
         return request;
