@@ -92,7 +92,7 @@ public class BuildingJdbcImpl implements BuildingJdbc {
 
         if (ValidateUtils.isValid(request.getStaffId())) {
 
-            joinQuery.append(" INNER JOIN assignmentbuilding a ON A.id = a.buildingid ");
+            joinQuery.append(" INNER JOIN assignmentbuilding a ON b.id = a.buildingid ");
             whereQuery.append(" AND b.staffid =  " + request.getStaffId());
         }
         if(request.getBuildingTypes().length > 0){
@@ -104,17 +104,33 @@ public class BuildingJdbcImpl implements BuildingJdbc {
 
             whereQuery.append(buildingTypeSql + ")");
         }
+
+        /*if (request.getAreaRentFrom() != 0 || (request.getAreaRentTo() != 0 )) {
+            joinQuery.append(" INNER JOIN rentarea e ON b.id = e.buildingid ");
+            whereQuery.append(" AND EXISTS (");
+            if (request.getAreaRentFrom() != null) {
+                whereQuery.append(" e.value >= " + request.getAreaRentFrom() + "");
+
+            if (request.getAreaRentTo() == null && request.getAreaRentTo() != null) {
+                    whereQuery.append(" e.value >= " + request.getAreaRentTo() + "");
+                }
+            }
+            if (request.getAreaRentFrom() != null && request.getAreaRentTo() != null) {
+                whereQuery.append(" AND e.value >= " + request.getAreaRentTo() + "");
+            }
+            whereQuery.append(")");
+        }*/
     }
 
     private void buildQueryWithoutJoin(StringBuilder whereQuery, BuildingSearchRequest request) {
 
-        if(!StringUtils.IsNullOrEmpty(request.getStreet())){
+        if(ValidateUtils.isValid(request.getStreet())){
             whereQuery.append(" AND b.street like'%" + request.getStreet() + "%' ");
         }
-        if(!StringUtils.IsNullOrEmpty(request.getWard())){
+        if(ValidateUtils.isValid(request.getWard())){
             whereQuery.append(" AND b.ward like'%" + request.getWard() + "%' ");
         }
-        if(!StringUtils.IsNullOrEmpty(request.getDistrict())){
+        if(ValidateUtils.isValid(request.getDistrict())){
             whereQuery.append(" AND d.code =  " + request.getDistrict());
         }
         if(request.getNumberOfBasement() != 0){
@@ -123,18 +139,12 @@ public class BuildingJdbcImpl implements BuildingJdbc {
         if(request.getBuildingArea() != 0){
             whereQuery.append(" AND b.floorarea like'%" + request.getBuildingArea() + "%' ");
         }
-        if (!StringUtils.IsNullOrEmpty(request.getRentPriceFrom().toString())) {
-            whereQuery.append(" AND A.rentprice >= " + request.getRentPriceFrom() + "");
+        if (ValidateUtils.isValid(request.getRentPriceFrom().toString())) {
+            whereQuery.append(" AND b.rentprice >= " + request.getRentPriceFrom() + "");
         }
-        if (!StringUtils.IsNullOrEmpty(request.getRentPriceTo().toString())) {
-            whereQuery.append(" AND A.rentprice <= " + request.getRentPriceTo() + "");
+        if (ValidateUtils.isValid(request.getRentPriceTo().toString())) {
+            whereQuery.append(" AND b.rentprice <= " + request.getRentPriceTo() + "");
         }
-//        if(request.getNumberOfBasement() != 0){
-//            whereQuery.append(" AND b.servicefee =  " + request.getServiceFee());
-//        }
-//        if(request.getBrokerAgeFee() != 0){
-//            whereQuery.append(" AND b.brokeragefee =  " + request.getBrokerAgeFee());
-//        }
         if (request.getAreaRentFrom() != 0 || (request.getAreaRentTo() != 0 )) {
             whereQuery.append(" AND EXISTS (SELECT * From rentarea R WHERE (R.buildingid = A.id");
             if (request.getAreaRentFrom() != null) {
@@ -145,6 +155,13 @@ public class BuildingJdbcImpl implements BuildingJdbc {
             }
             whereQuery.append("))");
         }
+//        if(request.getNumberOfBasement() != 0){
+//            whereQuery.append(" AND b.servicefee =  " + request.getServiceFee());
+//        }
+//        if(request.getBrokerAgeFee() != 0){
+//            whereQuery.append(" AND b.brokeragefee =  " + request.getBrokerAgeFee());
+//        }
+
     }
 
 }
