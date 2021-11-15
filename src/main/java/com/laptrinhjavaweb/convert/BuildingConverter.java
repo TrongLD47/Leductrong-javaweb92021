@@ -20,9 +20,9 @@ public class BuildingConverter {
     @Autowired
     private ModelMapper modelMapper;
 
-    public BuildingSearchResponse convertToBuidingSearchResponse(BuildingEntity entity){
+    private final DistrictJdbcImpl district = new DistrictJdbcImpl();
 
-        DistrictJdbcImpl district = new DistrictJdbcImpl();
+    public BuildingSearchResponse convertToBuidingSearchResponse(BuildingEntity entity){
 
         DistrictEntity districtEntity = district.findById(entity.getDistrictId());
 

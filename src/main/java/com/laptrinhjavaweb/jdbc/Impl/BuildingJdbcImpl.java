@@ -3,6 +3,7 @@ package com.laptrinhjavaweb.jdbc.Impl;
 import com.laptrinhjavaweb.dto.request.BuildingSearchRequest;
 import com.laptrinhjavaweb.entity.BuildingEntity;
 import com.laptrinhjavaweb.jdbc.BuildingJdbc;
+import com.laptrinhjavaweb.utils.SqlUtils;
 import com.laptrinhjavaweb.utils.StringUtils;
 import com.laptrinhjavaweb.utils.ValidateUtils;
 import org.springframework.stereotype.Repository;
@@ -28,6 +29,7 @@ public class BuildingJdbcImpl implements BuildingJdbc {
         ResultSet rs = null;
         List<BuildingEntity> buildings = new ArrayList<>();
 		try {
+		    conn = SqlUtils.getConnection();
             conn.setAutoCommit(false);
             if (conn != null) {
                 StringBuilder sql = new StringBuilder("SELECT b.id, b.name, b.street, b.ward, b.districtid, " +
@@ -124,43 +126,47 @@ public class BuildingJdbcImpl implements BuildingJdbc {
 
     private void buildQueryWithoutJoin(StringBuilder whereQuery, BuildingSearchRequest request) {
 
+        if(ValidateUtils.isValid(request.getName())){
+           // whereQuery.append(" AND b.name like'%" + request.getName() + "%' ");
+            whereQuery.append(SqlUtils.buildQueryUsingLike("b.name", request.getName()));
+        }
         if(ValidateUtils.isValid(request.getStreet())){
-            whereQuery.append(" AND b.street like'%" + request.getStreet() + "%' ");
+           // whereQuery.append(" AND b.street like'%" + request.getStreet() + "%' ");
+            whereQuery.append(SqlUtils.buildQueryUsingLike("b.street", request.getStreet()));
         }
         if(ValidateUtils.isValid(request.getWard())){
-            whereQuery.append(" AND b.ward like'%" + request.getWard() + "%' ");
+            //whereQuery.append(" AND b.ward like'%" + request.getWard() + "%' ");
+            whereQuery.append(SqlUtils.buildQueryUsingLike("b.ward", request.getWard()));
         }
         if(ValidateUtils.isValid(request.getDistrict())){
-            whereQuery.append(" AND d.code =  " + request.getDistrict());
+           // whereQuery.append(" AND d.code =  " + request.getDistrict());
+            whereQuery.append(SqlUtils.buildQueryUsingLike("d.code", request.getDistrict()));
         }
         if(request.getNumberOfBasement() != 0){
-            whereQuery.append(" AND b.numberofbasement =  " + request.getNumberOfBasement());
+           // whereQuery.append(" AND b.numberofbasement =  " + request.getNumberOfBasement());
+            whereQuery.append(SqlUtils.buildQueryUsingOperator("b.numberofbasement", request.getNumberOfBasement(), "="));
         }
         if(request.getBuildingArea() != 0){
-            whereQuery.append(" AND b.floorarea like'%" + request.getBuildingArea() + "%' ");
+           // whereQuery.append(" AND b.floorarea like'%" + request.getBuildingArea() + "%' ");
+            whereQuery.append(SqlUtils.buildQueryUsingOperator("b.floorarea", request.getFloorArea(), "="));
         }
-        if (ValidateUtils.isValid(request.getRentPriceFrom().toString())) {
-            whereQuery.append(" AND b.rentprice >= " + request.getRentPriceFrom() + "");
+        if (ValidateUtils.isValid(request.getRentPriceFrom().toString()) || ValidateUtils.isValid(request.getRentPriceTo().toString())) {
+          //  whereQuery.append(" AND b.rentprice >= " + request.getRentPriceFrom() + "");
+            whereQuery.append(SqlUtils.buildQueryUsingBetween("b.rentprice", request.getRentPriceFrom(), request.getRentPriceTo()));
         }
-        if (ValidateUtils.isValid(request.getRentPriceTo().toString())) {
-            whereQuery.append(" AND b.rentprice <= " + request.getRentPriceTo() + "");
-        }
+//        if (ValidateUtils.isValid(request.getRentPriceTo().toString())) {
+//           // whereQuery.append(" AND b.rentprice <= " + request.getRentPriceTo() + "");
+//            whereQuery.append(SqlUtils.buildQueryUsingLike("b.name", request.getName()));
+//        }
         if (request.getAreaRentFrom() != 0 || (request.getAreaRentTo() != 0 )) {
             whereQuery.append(" AND EXISTS (SELECT * From rentarea R WHERE (R.buildingid = A.id");
-            if (request.getAreaRentFrom() != null) {
-                whereQuery.append(" AND R.value >= " + request.getAreaRentFrom() + "");
-            }
-            if (request.getAreaRentTo() != null) {
-                whereQuery.append(" AND R.value >= " + request.getAreaRentTo() + "");
-            }
+            whereQuery.append(SqlUtils.buildQueryUsingBetween("R.value", request.getAreaRentFrom(), request.getAreaRentTo() ));
             whereQuery.append("))");
         }
-//        if(request.getNumberOfBasement() != 0){
-//            whereQuery.append(" AND b.servicefee =  " + request.getServiceFee());
-//        }
-//        if(request.getBrokerAgeFee() != 0){
-//            whereQuery.append(" AND b.brokeragefee =  " + request.getBrokerAgeFee());
-//        }
+        if(request.getBrokerAgeFee() != 0){
+            whereQuery.append(" AND b.brokeragefee =  " + request.getBrokerAgeFee());
+            whereQuery.append(SqlUtils.buildQueryUsingOperator("b.brokeragefee", request.getBrokerAgeFee(), "="));
+        }
 
     }
 

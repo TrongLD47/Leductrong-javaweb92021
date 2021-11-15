@@ -3,6 +3,7 @@ package com.laptrinhjavaweb.jdbc.Impl;
 import com.laptrinhjavaweb.entity.BuildingEntity;
 import com.laptrinhjavaweb.entity.DistrictEntity;
 import com.laptrinhjavaweb.jdbc.DistrictJdbc;
+import com.laptrinhjavaweb.utils.SqlUtils;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -18,14 +19,17 @@ public class DistrictJdbcImpl implements DistrictJdbc {
 
     @Override
     public  DistrictEntity findById(Integer id){
+
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         BuildingEntity buildingModel = new BuildingEntity();
         DistrictEntity districtEntity = new DistrictEntity();
         try {
+            conn = SqlUtils.getConnection();
             conn.setAutoCommit(false);
             if (conn != null) {
+
                 StringBuilder sql = new StringBuilder("SELECT d.id ,d.code, d.name FROM district d WHERE id = ? ");
 
                 stmt.setString(1, buildingModel.getDistrictId().toString() );
