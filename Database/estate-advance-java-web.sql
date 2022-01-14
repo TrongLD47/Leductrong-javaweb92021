@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `estatebasic` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `estatebasic`;
+CREATE DATABASE  IF NOT EXISTS `estateadvance` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `estateadvance`;
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
--- Host: localhost    Database: estatebasic
+-- Host: localhost    Database: estateadvance
 -- ------------------------------------------------------
 -- Server version	8.0.13
 
@@ -94,17 +94,17 @@ CREATE TABLE `building` (
   `name` varchar(255) NOT NULL,
   `street` varchar(255) DEFAULT NULL,
   `ward` varchar(255) DEFAULT NULL,
-  `districtid` bigint(20) NOT NULL,
+  `district` varchar(255) DEFAULT NULL,
   `structure` varchar(255) DEFAULT NULL,
   `numberofbasement` int(11) DEFAULT NULL,
   `floorarea` int(11) DEFAULT NULL,
   `direction` varchar(255) DEFAULT NULL,
   `level` varchar(255) DEFAULT NULL,
-  `rentprice` int(11) NOT NULL,
+  `rentprice` int(11) DEFAULT NULL,
   `rentpricedescription` text,
   `servicefee` varchar(255) DEFAULT NULL,
   `carfee` varchar(255) DEFAULT NULL,
-  `motorbikefee` varchar(255) DEFAULT NULL,
+  `motofee` varchar(255) DEFAULT NULL,
   `overtimefee` varchar(255) DEFAULT NULL,
   `waterfee` varchar(255) DEFAULT NULL,
   `electricityfee` varchar(255) DEFAULT NULL,
@@ -112,19 +112,18 @@ CREATE TABLE `building` (
   `payment` varchar(255) DEFAULT NULL,
   `renttime` varchar(255) DEFAULT NULL,
   `decorationtime` varchar(255) DEFAULT NULL,
-  `brokeragefee` decimal(13,2) DEFAULT NULL,
+  `brokeragetee` decimal(13,2) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
   `note` varchar(255) DEFAULT NULL,
   `linkofbuilding` varchar(255) DEFAULT NULL,
   `map` varchar(255) DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
   `createddate` datetime DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
   `createdby` varchar(255) DEFAULT NULL,
   `modifiedby` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_building_district` (`districtid`),
-  CONSTRAINT `fk_building_district` FOREIGN KEY (`districtid`) REFERENCES `district` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,37 +132,8 @@ CREATE TABLE `building` (
 
 LOCK TABLES `building` WRITE;
 /*!40000 ALTER TABLE `building` DISABLE KEYS */;
-INSERT INTO `building` VALUES (1,'Nam Giao Building Tower','59 phan xích long','Phường 2',1,NULL,2,500,NULL,NULL,15,'15 triệu/m2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,'ACM Tower','96 cao thắng','Phường 4',2,NULL,2,650,NULL,NULL,18,'18 triệu/m2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'Alpha 2 Building Tower','153 nguyễn đình chiểu','Phường 6',1,NULL,1,200,NULL,NULL,20,'20 triệu/m2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(4,'IDD 1 Building','111 Lý Chính Thắng','Phường 7',3,NULL,1,200,NULL,NULL,12,'12 triệu/m2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `building` VALUES (1,'Nam Giao Building Tower','59 phan xích long','Phường 2','QUAN_1',NULL,2,500,NULL,NULL,15,'15 triệu/m2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'TANG_TRET,NGUYEN_CAN',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,'ACM Tower','96 cao thắng','Phường 4','QUAN_2',NULL,2,650,NULL,NULL,18,'18 triệu/m2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'NGUYEN_CAN',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'Alpha 2 Building Tower','153 nguyễn đình chiểu','Phường 6','QUAN_1',NULL,1,200,NULL,NULL,20,'20 triệu/m2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'NOI_THAT',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(4,'IDD 1 Building','111 Lý Chính Thắng','Phường 7','QUAN_4',NULL,1,200,NULL,NULL,12,'12 triệu/m2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'TANG_TRET,NGUYEN_CAN,NOI_THAT',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(6,'test',NULL,NULL,NULL,NULL,10,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `building` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `buildingrenttype`
---
-
-DROP TABLE IF EXISTS `buildingrenttype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `buildingrenttype` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `buildingid` bigint(20) NOT NULL,
-  `renttypeid` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_buildingtype_building` (`buildingid`),
-  KEY `fk_buildingtype_renttype` (`renttypeid`),
-  CONSTRAINT `fk_buildingtype_building` FOREIGN KEY (`buildingid`) REFERENCES `building` (`id`),
-  CONSTRAINT `fk_buildingtype_renttype` FOREIGN KEY (`renttypeid`) REFERENCES `renttype` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `buildingrenttype`
---
-
-LOCK TABLES `buildingrenttype` WRITE;
-/*!40000 ALTER TABLE `buildingrenttype` DISABLE KEYS */;
-INSERT INTO `buildingrenttype` VALUES (1,1,1),(2,1,2),(3,2,2),(4,3,3),(5,4,1),(6,4,2),(7,4,3);
-/*!40000 ALTER TABLE `buildingrenttype` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -196,32 +166,6 @@ LOCK TABLES `customer` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `district`
---
-
-DROP TABLE IF EXISTS `district`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `district` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `code` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `district`
---
-
-LOCK TABLES `district` WRITE;
-/*!40000 ALTER TABLE `district` DISABLE KEYS */;
-INSERT INTO `district` VALUES (1,'Q1','Quận 1'),(2,'Q2','Quận 2'),(3,'Q4','Quận 4');
-/*!40000 ALTER TABLE `district` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `rentarea`
 --
 
@@ -231,7 +175,7 @@ DROP TABLE IF EXISTS `rentarea`;
 CREATE TABLE `rentarea` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `value` int(11) DEFAULT NULL,
-  `buildingid` bigint(20) NOT NULL,
+  `buildingid` bigint(20) DEFAULT NULL,
   `createddate` datetime DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
   `createdby` varchar(255) DEFAULT NULL,
@@ -239,7 +183,7 @@ CREATE TABLE `rentarea` (
   PRIMARY KEY (`id`),
   KEY `rentarea_building` (`buildingid`),
   CONSTRAINT `rentarea_building` FOREIGN KEY (`buildingid`) REFERENCES `building` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,34 +192,8 @@ CREATE TABLE `rentarea` (
 
 LOCK TABLES `rentarea` WRITE;
 /*!40000 ALTER TABLE `rentarea` DISABLE KEYS */;
-INSERT INTO `rentarea` VALUES (1,100,1,NULL,NULL,NULL,NULL),(2,200,1,NULL,NULL,NULL,NULL),(3,200,2,NULL,NULL,NULL,NULL),(4,300,2,NULL,NULL,NULL,NULL),(5,400,2,NULL,NULL,NULL,NULL),(6,300,3,NULL,NULL,NULL,NULL),(7,400,3,NULL,NULL,NULL,NULL),(8,500,3,NULL,NULL,NULL,NULL),(9,100,4,NULL,NULL,NULL,NULL),(10,400,4,NULL,NULL,NULL,NULL),(11,250,4,NULL,NULL,NULL,NULL);
+INSERT INTO `rentarea` VALUES (1,100,1,NULL,NULL,NULL,NULL),(2,200,1,NULL,NULL,NULL,NULL),(3,200,2,NULL,NULL,NULL,NULL),(4,300,2,NULL,NULL,NULL,NULL),(5,400,2,NULL,NULL,NULL,NULL),(6,300,3,NULL,NULL,NULL,NULL),(7,400,3,NULL,NULL,NULL,NULL),(8,500,3,NULL,NULL,NULL,NULL),(9,100,4,NULL,NULL,NULL,NULL),(10,400,4,NULL,NULL,NULL,NULL),(11,250,4,NULL,NULL,NULL,NULL),(24,700,6,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `rentarea` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `renttype`
---
-
-DROP TABLE IF EXISTS `renttype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `renttype` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `code` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `renttype`
---
-
-LOCK TABLES `renttype` WRITE;
-/*!40000 ALTER TABLE `renttype` DISABLE KEYS */;
-INSERT INTO `renttype` VALUES (1,'TANG_TRET','Tầng trệt'),(2,'NGUYEN_CAN','Nguyên căn'),(3,'NOI_THAT','Nội thất');
-/*!40000 ALTER TABLE `renttype` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -316,18 +234,17 @@ DROP TABLE IF EXISTS `transaction`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `transaction` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) DEFAULT NULL,
   `note` varchar(255) DEFAULT NULL,
   `customerid` bigint(20) NOT NULL,
   `createddate` datetime DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
   `createdby` varchar(255) DEFAULT NULL,
   `modifiedby` varchar(255) DEFAULT NULL,
-  `type` bigint(20) DEFAULT NULL,
+  `staffid` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_customer_transaction` (`customerid`),
-  KEY `fk_transactiontype_transaction_idx` (`type`),
-  CONSTRAINT `fk_customer_transaction` FOREIGN KEY (`customerid`) REFERENCES `customer` (`id`),
-  CONSTRAINT `fk_transactiontype_transaction` FOREIGN KEY (`type`) REFERENCES `transactiontype` (`id`)
+  CONSTRAINT `fk_customer_transaction` FOREIGN KEY (`customerid`) REFERENCES `customer` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -338,34 +255,6 @@ CREATE TABLE `transaction` (
 LOCK TABLES `transaction` WRITE;
 /*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
 /*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `transactiontype`
---
-
-DROP TABLE IF EXISTS `transactiontype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `transactiontype` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `code` varchar(255) NOT NULL,
-  `createddate` timestamp NULL DEFAULT NULL,
-  `modifieddate` timestamp NULL DEFAULT NULL,
-  `createdby` varchar(255) DEFAULT NULL,
-  `modifiedby` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `transactiontype`
---
-
-LOCK TABLES `transactiontype` WRITE;
-/*!40000 ALTER TABLE `transactiontype` DISABLE KEYS */;
-/*!40000 ALTER TABLE `transactiontype` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -436,11 +325,11 @@ INSERT INTO `user_role` VALUES (1,1,1,NULL,NULL,NULL,NULL),(2,2,2,NULL,NULL,NULL
 UNLOCK TABLES;
 
 --
--- Dumping events for database 'estatebasic'
+-- Dumping events for database 'estateadvance'
 --
 
 --
--- Dumping routines for database 'estatebasic'
+-- Dumping routines for database 'estateadvance'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -452,4 +341,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-01 13:03:25
+-- Dump completed on 2021-05-01 13:04:26
