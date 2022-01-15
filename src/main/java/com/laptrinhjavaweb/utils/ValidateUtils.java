@@ -14,7 +14,10 @@ public class ValidateUtils {
                 return true;
             }else if(obj instanceof Integer){
                 return true;
-            }else if(obj instanceof Collection){
+            }else if(obj instanceof Long){
+                return true;
+            }
+            else if(obj instanceof Collection){
                 return !((Collection<?>) obj).isEmpty();
             }
         }

@@ -1,6 +1,2 @@
-HELP.md
-*.md
-target
-exercise-2-leductrong-javaweb92021.iml
-.idea
-git
+/target
+/.idea
