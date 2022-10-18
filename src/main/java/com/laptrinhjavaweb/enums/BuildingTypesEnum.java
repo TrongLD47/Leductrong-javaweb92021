@@ -11,11 +11,27 @@ public enum BuildingTypesEnum {
     BuildingTypesEnum(String buildingTypeValue) {
         this.buildingTypeValue = buildingTypeValue;
     }
-    public String getDistrictTypeValue() {
-        return buildingTypeValue;
-    }
 
-    public String getBuildingTypeValue() {
+	public String getBuildingTypeValue() {
 		return buildingTypeValue;
-	}	
+	}
+	public static String getBuildingTypeValue(String type) {
+		String value = "";
+		if(type != null && type != "") {
+			String[] array = type.split("\\,", -1);
+			for (int i = 0; i < array.length; i++) {
+				for (BuildingTypesEnum item : BuildingTypesEnum.values()) {
+					if(item.name().equals(array[i])) {
+						if(i > 0) {
+							value += "," +  item.getBuildingTypeValue();
+						}else {
+							value += item.getBuildingTypeValue();
+						}
+						
+					}
+				}
+			}		
+		}		
+		return value;
+	}
 }
